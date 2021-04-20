@@ -30,4 +30,4 @@ jobs:
         app-name: 'dachshund'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_1888c857df9d464c988db3c133877c41 }}
-        package: 'target/*.jar'
+        package: '${{ github.workspace }}/target/*.jar'
