@@ -22,7 +22,7 @@ jobs:
         java-version: '11'
 
     - name: Build with Maven
-      run: mvn -f demo/ clean install
+      run: mvn -f demo/pom.xml clean install
 
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v2
@@ -38,6 +38,10 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v2
+      with:
+        name: java-app
 
     - name: Deploy to Azure Web App
       id: deploy-to-webapp
@@ -45,5 +49,5 @@ jobs:
       with:
         app-name: 'dachshund'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_99a3b984c54549699359ee973b9373d3 }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_1888c857df9d464c988db3c133877c41 }}
         package: '*.jar'
