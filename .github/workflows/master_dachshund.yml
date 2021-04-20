@@ -7,15 +7,13 @@ on:
   push:
     branches:
       - master
-  workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: windows-latest
+  build-and-deploy:
+    runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2.3.4
-
+    - uses: actions/checkout@master
 
     - name: Set up Java version
       uses: actions/setup-java@v1
@@ -23,27 +21,7 @@ jobs:
         java-version: '11'
 
     - name: Build with Maven
-      run: mvn -f demo/ clean install -U
-
-    - name: Upload artifact for deployment job
-      uses: actions/upload-artifact@v2
-      with:
-        name: java-app
-        path: '${{ github.workspace }}\target\*.jar'
-        if-no-files-found: error
-
-  deploy:
-    runs-on: windows-latest
-    needs: build
-    environment:
-      name: 'production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
-    steps:
-    - name: Download artifact from build job
-      uses: actions/download-artifact@v2
-      with:
-        name: java-app
+      run: mvn clean install
 
     - name: Deploy to Azure Web App
       id: deploy-to-webapp
@@ -52,4 +30,4 @@ jobs:
         app-name: 'dachshund'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_1888c857df9d464c988db3c133877c41 }}
-        package: '*.jar'
+        package: '${{ github.workspace }}/target/*.jar'
