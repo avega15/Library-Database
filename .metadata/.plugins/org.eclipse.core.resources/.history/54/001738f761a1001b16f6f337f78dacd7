@@ -1,0 +1,12 @@
+package com.example.demo;
+
+public class Listing {
+	String title;
+	String author;
+	String isbn;
+	String date_of_publication;
+	String call_number;
+	
+	
+
+}

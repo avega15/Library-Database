@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <title>Getting Started: Serving Web Content</title> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<p>Title</p>
+	<table>
+	    <tr th:each="bib: ${bibs}">
+		    <td th:text="${bib.get(0)}"></td>
+		</tr>
+    </table>
+</body>
+</html>

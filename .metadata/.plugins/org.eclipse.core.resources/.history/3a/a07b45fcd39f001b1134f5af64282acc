@@ -1,0 +1,24 @@
+package com.example.demo;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Member {
+
+  //private String type;
+  private List<Data> member;
+
+  public Member() {
+  }
+  
+
+  public void setValue(List<Data> member) {
+    this.member= member;
+  }
+
+  @Override
+  public String toString() {
+    return member.toString();
+  }
+}

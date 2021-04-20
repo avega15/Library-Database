@@ -1,0 +1,34 @@
+package com.example.demo;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Value {
+
+  private Long title;
+  private String quote;
+
+  public Value() {
+  }
+
+  public Long getId() {
+    return this.title;
+  }
+
+  public String getQuote() {
+    return this.quote;
+  }
+
+  public void setId(Long id) {
+    this.title = id;
+  }
+
+  public void setQuote(String quote) {
+    this.quote = quote;
+  }
+
+  @Override
+  public String toString() {
+    return title + " " + quote;
+  }
+}

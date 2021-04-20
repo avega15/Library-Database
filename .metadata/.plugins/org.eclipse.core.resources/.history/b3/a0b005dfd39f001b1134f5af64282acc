@@ -1,0 +1,24 @@
+package com.example.demo;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Quote {
+
+  //private String type;
+  private List<Member> member;
+
+  public Quote() {
+  }
+  
+
+  public void setValue(List<Member> member) {
+    this.member= member;
+  }
+
+  @Override
+  public String toString() {
+    return member.toString();
+  }
+}

@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Dachshund Book Catalogue</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<table>
+		<tr>
+			<th>Title</th>
+			<th>Author</th>
+			<th>ISBN</th>
+			<th>Date of Publication</th>
+			<th>Call #</th>
+		</tr>
+		<tr th:each="bib: ${bibs}">
+			<td th:text="${bib.get(0)}"></td>
+			<td th:text="${bib.get(1)}"></td>
+			<td th:text="${bib.get(2)}"></td>
+			<td th:text="${bib.get(3)}"></td>
+			<td th:text="${bib.get(4)}"></td>
+		</tr>
+	</table>
+</body>
+</html>

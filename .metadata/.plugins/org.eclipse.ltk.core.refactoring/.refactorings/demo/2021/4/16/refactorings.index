@@ -1,0 +1,14 @@
+1618699185837	Rename field 'id'
+1618699232165	Rename field 'quote'
+1618700229563	Rename field 'bib_data'
+1618700255792	Rename field 'title'
+1618700265109	Rename field 'author'
+1618700812475	Rename type 'Value'
+1618701262443	Rename field 'member'
+1618701522850	Rename field 'members'
+1618701790922	Rename type 'Member'
+1618701809111	Rename type 'Quote'
+1618701943207	Rename type 'Data'
+1618703466664	Delete element
+1618703471844	Delete element
+1618703941436	Rename type 'Title'
