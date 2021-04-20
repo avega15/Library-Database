@@ -41,6 +41,7 @@ jobs:
     - name: Download artifact from build job
       uses: actions/download-artifact@v2
       with:
+        needs: build
         name: java-app
 
     - name: Deploy to Azure Web App
