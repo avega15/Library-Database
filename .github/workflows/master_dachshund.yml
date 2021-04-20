@@ -29,6 +29,7 @@ jobs:
       with:
         name: java-app
         path: '${{ github.workspace }}/target/*.jar'
+        if-no-files-found: error
 
   deploy:
     runs-on: windows-latest
