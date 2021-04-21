@@ -52,14 +52,13 @@ public class Data {
 		return null;
 	}
 
-	@SuppressWarnings("null")
-	public Listing toListing(Data output) {
-		Listing list = null;
-		list.setTitle(output.bib_data.getTitle());
-		list.setAuthor(output.bib_data.getAuthor());
-		list.setIsbn(output.bib_data.getIsbn());
-		list.setDate_of_publication(output.bib_data.getDate_of_publication());
-		list.setCall_number(output.holding_data.getCall_number());
+	public Listing toListing() {
+		Listing list = new Listing();
+		list.setTitle(bib_data.getTitle());
+		list.setAuthor(bib_data.getAuthor());
+		list.setIsbn(bib_data.getIsbn());
+		list.setDate_of_publication(bib_data.getDate_of_publication());
+		list.setCall_number(holding_data.getCall_number());
 		
 		return list;
 	}

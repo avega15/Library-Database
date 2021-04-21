@@ -17,7 +17,7 @@ public class Bib_Data {
 	
 	
 	public String getAuthor() {
-		return author;
+		return cleanAuthor(author);
 	}
 
 	public void setAuthor(String author) {
@@ -25,7 +25,7 @@ public class Bib_Data {
 	}
 
 	public String getIsbn() {
-		return isbn;
+		return cleanISBN(isbn);
 	}
 
 	public void setIsbn(String isbn) {
@@ -33,7 +33,7 @@ public class Bib_Data {
 	}
 
 	public String getDate_of_publication() {
-		return date_of_publication;
+		return cleanDate(date_of_publication);
 	}
 
 	public void setDate_of_publication(String date_of_publication) {
@@ -41,7 +41,7 @@ public class Bib_Data {
 	}
 	
 	public String getTitle() {
-		return this.title;
+		return cleanTitle(title);
 	}
 	
 	public void setTitle(String title) {

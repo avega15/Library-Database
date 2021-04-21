@@ -17,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
-public class ApiController {
+public class APIcontroller {
 
 	@Autowired
 	private RestTemplate restTemplate;
@@ -26,11 +26,12 @@ public class ApiController {
 
 	ArrayList<String> link = new ArrayList<String>();
 	ArrayList<ArrayList<String>> bib = new ArrayList<ArrayList<String>>();
-	ArrayList<Data> fin = new ArrayList<Data>();
+	ArrayList<Listing> original = new ArrayList<Listing>();
+	ArrayList<Listing> listings = new ArrayList<Listing>();
 
 	@GetMapping("/main")
 	public ModelAndView getBib(ModelAndView modelAndView) {
-		modelAndView.addObject("bibs", bib);
+		modelAndView.addObject("bibs", original);
 		modelAndView.setViewName("main");
 
 		return modelAndView;
@@ -38,18 +39,18 @@ public class ApiController {
 	
 	@RequestMapping(value="/titleSort")
 	public ModelAndView titleSort(ModelAndView modelAndView) {
-		modelAndView.addObject("bibs", bib);
+		modelAndView.addObject("bibs", listings);
 		modelAndView.setViewName("main");
-		sortByTitle(bib);
+		sortByTitle(listings);
 
 		return modelAndView;
 	}
 	
 	@RequestMapping(value="/dateSort")
 	public ModelAndView dateSort(ModelAndView modelAndView) {
-		modelAndView.addObject("bibs", bib);
+		modelAndView.addObject("bibs", listings);
 		modelAndView.setViewName("main");
-		sortByDate(bib);
+		sortByDate(listings);
 
 		return modelAndView;
 	}
@@ -69,7 +70,6 @@ public class ApiController {
 
 		boolean success;
 		String linkURL;
-		int count = link.size();
 		for (int i = 0; i < link.size(); i++) {
 			linkURL = link.get(i);
 			success = false;
@@ -79,13 +79,11 @@ public class ApiController {
 					Data output = restTemplate.getForObject(linkURL + "?apikey=" + key + "&amp;format=json",
 							Data.class);
 
-					// System.out.println(linkURL + "?apikey=" + key + "&amp;format=json");
-					// System.out.println(output.getBib_Data());
 					bib.add(output.toArrayList());
-					// fin.add(output);
+					original.add(output.toListing());
+					listings.add(output.toListing());
 
 					success = true;
-					System.out.println(count--);
 				} catch (HttpClientErrorException e) {
 					try {
 						Thread.sleep(1500);
@@ -100,28 +98,26 @@ public class ApiController {
 		return bib;
 	}
 
-	public ArrayList<ArrayList<String>> sortByTitle(ArrayList<ArrayList<String>> bib) {
+	public ArrayList<Listing> sortByTitle(ArrayList<Listing> listings) {
 
-		Collections.sort(bib, new Comparator<List<String>>() {
-			@Override
-			public int compare(List<String> a, List<String> b) {
-				return a.get(0).compareTo(b.get(0));
-			}
+		Collections.sort(listings, new Comparator<Listing>() {
+		    public int compare(Listing v1, Listing v2) {
+		        return v1.getTitle().compareTo(v2.getTitle());
+		    }
 		});
 
-		return bib;
+		return listings;
 	}
 
-	public ArrayList<ArrayList<String>> sortByDate(ArrayList<ArrayList<String>> bib) {
+	public ArrayList<Listing> sortByDate(ArrayList<Listing> listings) {
 
-		Collections.sort(bib, new Comparator<List<String>>() {
-			@Override
-			public int compare(List<String> a, List<String> b) {
-				return a.get(3).compareTo(b.get(3));
-			}
+		Collections.sort(listings, new Comparator<Listing>() {
+		    public int compare(Listing v1, Listing v2) {
+		        return v1.getDate_of_publication().compareTo(v2.getDate_of_publication());
+		    }
 		});
 
-		return bib;
+		return listings;
 	}
 
 }
