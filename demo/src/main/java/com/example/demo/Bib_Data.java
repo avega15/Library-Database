@@ -80,7 +80,10 @@ public class Bib_Data {
 			author = author.substring(0, author.length() - 1);
 			
 		}
-		return author;
+		String[] name = author.split(", ");
+		
+		
+		return name[0] + " " + name[1];
 	}
 	
 	public String cleanISBN (String isbn) {

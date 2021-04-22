@@ -51,5 +51,12 @@ public class Listing {
 		this.call_number = call_number;
 	}
 	
+	@Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Listing) {
+            return ((Listing) obj).title == title;
+        }
+        return false;
+    }
 
 }

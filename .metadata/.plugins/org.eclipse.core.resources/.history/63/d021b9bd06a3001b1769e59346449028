@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Dachshund Book Catalogue</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+</head>
+<body>
+	<h1 style="text-align: center"></h1>
+
+
+	<div class="container">
+		<h2>Dachshund Book Catalogue</h2>
+		<div class="list-group" th:each="bib, bibStat: ${bibs}">
+			<a href="#" class="list-group-item active">
+				<h4 class="list-group-item-heading" th:text="${bibStat.count + '. ' + bib.getTitle()}">First List Group Item
+					Heading</h4>
+				<p class="list-group-item-text" th:text="${bib.getAuthor()}">List Group Item Text</p>
+				<p class="list-group-item-text" th:text="${bib.getIsbn()}">List Group Item Text</p>
+				<p class="list-group-item-text" th:text="${bib.getDate_of_publication()}">List Group Item Text</p>
+				<p class="list-group-item-text" th:text="${bib.getAuthor()}">List Group Item Text</p>
+			</a>
+		</div>
+	</div>
+
+	<table>
+		<tr>
+			<th onclick="window.location.href='titleSort';">Title</th>
+			<th>Author</th>
+			<th>ISBN</th>
+			<th onclick="window.location.href='dateSort';">Date of
+				Publication</th>
+			<th>Call #</th>
+		</tr>
+		<tr th:each="bib, bibStat: ${bibs}">
+			<td th:text="${bibStat.count + ' ' + bib.getTitle()}"></td>
+			<td th:text="${bib.getAuthor()}"></td>
+			<td th:text="${bib.getIsbn()}"></td>
+			<td th:text="${bib.getDate_of_publication()}"></td>
+			<td th:text="${bib.getCall_number()}"></td>
+		</tr>
+	</table>
+	<button onclick="window.location.href='titleSort'">Sort by
+		Title</button>
+	<button onclick="window.location.href='dateSort'">Sort by Date
+		of Publication</button>
+</body>
+</html>

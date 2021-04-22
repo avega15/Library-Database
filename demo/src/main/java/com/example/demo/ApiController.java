@@ -21,23 +21,22 @@ public class APIcontroller {
 
 	@Autowired
 	private RestTemplate restTemplate;
-	private static String url = "https://api-na.hosted.exlibrisgroup.com/almaws/v1/conf/sets/1327214400000521/members";
-	private static String key = "l8xxd676f2aa10c2482e95457d2f264bd8d6";
+	private static String url = "https://api-na.hosted.exlibrisgroup.com/almaws/v1/conf/sets/15528919710002976/members";
+	private static String key = "l7xx552b0dcc0d0f47e9a9f5da308caaa6de";
 
-	ArrayList<String> link = new ArrayList<String>();
 	ArrayList<ArrayList<String>> bib = new ArrayList<ArrayList<String>>();
-	ArrayList<Listing> original = new ArrayList<Listing>();
 	ArrayList<Listing> listings = new ArrayList<Listing>();
-
+	
 	@GetMapping("/main")
 	public ModelAndView getBib(ModelAndView modelAndView) {
-		modelAndView.addObject("bibs", original);
+		listings = callAPI();
+		modelAndView.addObject("bibs", listings);
 		modelAndView.setViewName("main");
 
 		return modelAndView;
 	}
-	
-	@RequestMapping(value="/titleSort")
+
+	@RequestMapping(value = "/titleSort")
 	public ModelAndView titleSort(ModelAndView modelAndView) {
 		modelAndView.addObject("bibs", listings);
 		modelAndView.setViewName("main");
@@ -45,8 +44,8 @@ public class APIcontroller {
 
 		return modelAndView;
 	}
-	
-	@RequestMapping(value="/dateSort")
+
+	@RequestMapping(value = "/dateSort")
 	public ModelAndView dateSort(ModelAndView modelAndView) {
 		modelAndView.addObject("bibs", listings);
 		modelAndView.setViewName("main");
@@ -55,10 +54,31 @@ public class APIcontroller {
 		return modelAndView;
 	}
 
-	@PostConstruct
-	public ArrayList<ArrayList<String>> getLinks() {
-		Member books = restTemplate.getForObject(url + "?apikey=" + key + "&amp;format=json", Member.class);
+	public ArrayList<Listing> sortByTitle(ArrayList<Listing> listings) {
 
+		Collections.sort(listings, new Comparator<Listing>() {
+			public int compare(Listing v1, Listing v2) {
+				return v1.getTitle().compareTo(v2.getTitle());
+			}
+		});
+
+		return listings;
+	}
+
+	public ArrayList<Listing> sortByDate(ArrayList<Listing> listings) {
+
+		Collections.sort(listings, new Comparator<Listing>() {
+			public int compare(Listing v1, Listing v2) {
+				return v1.getDate_of_publication().compareTo(v2.getDate_of_publication());
+			}
+		});
+
+		return listings;
+	}
+	private ArrayList<String> getLinks() {
+		Member books = restTemplate.getForObject(url + "?apikey=" + key + "&amp;format=json", Member.class);
+		ArrayList<String> link = new ArrayList<String>();
+		
 		String book = books.toString();
 		String[] links = book.split(", ", -1);
 
@@ -68,56 +88,24 @@ public class APIcontroller {
 			link.add(links[i]);
 		}
 
-		boolean success;
+		return link;
+	}
+	private ArrayList<Listing> callAPI() {
+		ArrayList<Listing> info = new ArrayList<Listing>();
+		
+		ArrayList<String> link = getLinks();
 		String linkURL;
 		for (int i = 0; i < link.size(); i++) {
 			linkURL = link.get(i);
-			success = false;
 
-			while (!success) {
-				try {
-					Data output = restTemplate.getForObject(linkURL + "?apikey=" + key + "&amp;format=json",
-							Data.class);
+			Data output = restTemplate.getForObject(
+					linkURL + "?apikey=" + key + "&amp;format=json", Data.class);
 
-					bib.add(output.toArrayList());
-					original.add(output.toListing());
-					listings.add(output.toListing());
+			info.add(output.toListing());
 
-					success = true;
-				} catch (HttpClientErrorException e) {
-					try {
-						Thread.sleep(1500);
-					} catch (InterruptedException e1) {
-						e1.printStackTrace();
-					}
-				}
 
-			}
 		}
-
-		return bib;
-	}
-
-	public ArrayList<Listing> sortByTitle(ArrayList<Listing> listings) {
-
-		Collections.sort(listings, new Comparator<Listing>() {
-		    public int compare(Listing v1, Listing v2) {
-		        return v1.getTitle().compareTo(v2.getTitle());
-		    }
-		});
-
-		return listings;
-	}
-
-	public ArrayList<Listing> sortByDate(ArrayList<Listing> listings) {
-
-		Collections.sort(listings, new Comparator<Listing>() {
-		    public int compare(Listing v1, Listing v2) {
-		        return v1.getDate_of_publication().compareTo(v2.getDate_of_publication());
-		    }
-		});
-
-		return listings;
+		return info;
 	}
 
 }
