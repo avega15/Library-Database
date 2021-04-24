@@ -5,3 +5,17 @@
 1618864450773	Delete element
 1618980450239	Rename type 'ApiController'
 1619129545945	Rename local variable 'test'
+1619237363838	Rename type 'DemoApplication'
+1619237369369	Rename type 'DemoApplicationTests'
+1619241152268	Delete element
+1619241159752	Delete element
+1619241170116	Delete element
+1619241262634	Delete element
+1619241291659	Move compilation units
+1619242102039	Move compilation unit
+1619242115133	Rename package 'com.example.demo.model'
+1619244014526	Move compilation units
+1619244055274	Move compilation unit
+1619244137262	Delete element
+1619244168000	Move compilation unit
+1619244232001	Move compilation units
