@@ -1,9 +1,10 @@
-package controller;
+package com.example.demo.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,14 +22,16 @@ public class APIcontroller {
 	private RestTemplate restTemplate;
 	
 	private static String url = "https://api-na.hosted.exlibrisgroup.com/almaws/v1/conf/sets/15528919710002976/members";
-	private static String key = "l7xx552b0dcc0d0f47e9a9f5da308caaa6de";
-
-	ArrayList<ArrayList<String>> bib = new ArrayList<ArrayList<String>>();
+	
+	@Value("${my.key}")
+	private String key;
+	//ArrayList<ArrayList<String>> bib = new ArrayList<ArrayList<String>>();
 	ArrayList<Listing> listings = new ArrayList<Listing>();
 	
 	@GetMapping("/main")
 	public ModelAndView getBib(ModelAndView modelAndView) {
 		listings = callAPI();
+		
 		modelAndView.addObject("bibs", listings);
 		modelAndView.setViewName("main");
 
@@ -54,7 +57,8 @@ public class APIcontroller {
 	}
 
 	public ArrayList<Listing> sortByTitle(ArrayList<Listing> listings) {
-
+		
+		//Sorts an ArrayList of Objects alphabetically based on getTitle()
 		Collections.sort(listings, new Comparator<Listing>() {
 			public int compare(Listing v1, Listing v2) {
 				return v1.getTitle().compareTo(v2.getTitle());
@@ -66,6 +70,7 @@ public class APIcontroller {
 
 	public ArrayList<Listing> sortByDate(ArrayList<Listing> listings) {
 
+		////Sorts an ArrayList of Objects in ascending order by getDate...()
 		Collections.sort(listings, new Comparator<Listing>() {
 			public int compare(Listing v1, Listing v2) {
 				return v1.getDate_of_publication().compareTo(v2.getDate_of_publication());
@@ -74,10 +79,17 @@ public class APIcontroller {
 
 		return listings;
 	}
+	
+	//Gets all links from members
 	private ArrayList<String> getLinks() {
-		Member books = restTemplate.getForObject(url + "?apikey=" + key + "&amp;format=json", Member.class);
+		//Uses restTemplate to put JSON into a Member Object.
+		//Member Object is a List of Link Object
+		//Link object only contains link field, ignores other JSON
+		Member books = restTemplate.getForObject(
+				url + "?apikey=" + key + "&amp;format=json", Member.class);
 		ArrayList<String> link = new ArrayList<String>();
 		
+		//Creates array of links
 		String book = books.toString();
 		String[] links = book.split(", ", -1);
 
@@ -89,21 +101,30 @@ public class APIcontroller {
 
 		return link;
 	}
+	
 	private ArrayList<Listing> callAPI() {
 		ArrayList<Listing> info = new ArrayList<Listing>();
 		
+		//Gets JSON link of every book
 		ArrayList<String> link = getLinks();
+		
 		String linkURL;
 		for (int i = 0; i < link.size(); i++) {
 			linkURL = link.get(i);
 
+			//restTemplate puts JSON into a Data Object which 
+			//is made up of a Bib_Data and Holding_Data object
 			Data output = restTemplate.getForObject(
 					linkURL + "?apikey=" + key + "&amp;format=json", Data.class);
-
+			
+			//Converts Data object into Listing Object.
+			//Listing Object has all the JSON data we 
+			//need in a single, convenient place.
 			info.add(output.toListing());
 
 
 		}
+		
 		return info;
 	}
 

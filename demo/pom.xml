@@ -74,7 +74,7 @@
 					<schemaVersion>V2</schemaVersion>
 					<subscriptionId>29236e23-cd2c-4b47-88a7-0757d22f1e1f</subscriptionId>
 					<resourceGroup>spring-boot</resourceGroup>
-					<appName>Dachshund</appName>
+					<appName>Flamingo</appName>
 					<pricingTier>B2</pricingTier>
 					<region>westus</region>
 					<runtime>

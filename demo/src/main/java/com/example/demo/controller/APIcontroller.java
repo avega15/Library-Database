@@ -20,15 +20,16 @@ public class APIcontroller {
 
 	@Autowired
 	private RestTemplate restTemplate;
-	private static String url = "https://api-na.hosted.exlibrisgroup.com/almaws/v1/conf/sets/15528919710002976/members";
 	
-	@Value("${api.key}")
-	private static String key;
+	//Gets API key which is stored in application.properties
+	@Value("${my.key}")
+	private String key;
+	
+	private static String url = "https://api-na.hosted.exlibrisgroup.com/almaws/v1/conf/sets/15528919710002976/members";
 	ArrayList<Listing> listings = new ArrayList<Listing>();
 	
 	@GetMapping("/main")
 	public ModelAndView getBib(ModelAndView modelAndView) {
-		System.out.println(key);
 		listings = callAPI();
 		
 		modelAndView.addObject("bibs", listings);
