@@ -1,0 +1,6 @@
+package com.example.demo.controller;
+
+@Configuration
+@PropertySource("encrypted.properties")
+public class AppConfigForJasyptStarter {
+}

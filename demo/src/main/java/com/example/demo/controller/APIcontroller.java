@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,15 +20,15 @@ public class APIcontroller {
 
 	@Autowired
 	private RestTemplate restTemplate;
-	
 	private static String url = "https://api-na.hosted.exlibrisgroup.com/almaws/v1/conf/sets/15528919710002976/members";
-	private static String key = "l7xx552b0dcc0d0f47e9a9f5da308caaa6de";
-
-	//ArrayList<ArrayList<String>> bib = new ArrayList<ArrayList<String>>();
+	
+	@Value("${api.key}")
+	private static String key;
 	ArrayList<Listing> listings = new ArrayList<Listing>();
 	
 	@GetMapping("/main")
 	public ModelAndView getBib(ModelAndView modelAndView) {
+		System.out.println(key);
 		listings = callAPI();
 		
 		modelAndView.addObject("bibs", listings);
@@ -122,6 +123,7 @@ public class APIcontroller {
 
 
 		}
+		
 		return info;
 	}
 

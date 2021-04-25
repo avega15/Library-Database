@@ -1,0 +1,10 @@
+package com.example.demo.key;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
+@ConfigurationProperties()
+public class Key {
+	
+	private static String key = "l7xx552b0dcc0d0f47e9a9f5da308caaa6de";
+
+}
