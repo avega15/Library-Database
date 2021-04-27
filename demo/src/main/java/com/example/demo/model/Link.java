@@ -3,7 +3,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties
 public class Link {
-
+	
+	//String id;
+	//String description
 	String link;
 	
 	public Link() {	
