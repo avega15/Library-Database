@@ -51,7 +51,7 @@ public class Item {
 		return null;
 	}
 
-	public Bibliography toBib() {
+	public Bibliography toListing() {
 		Bibliography list = new Bibliography();
 		list.setTitle(bib_data.getTitle());
 		list.setAuthor(bib_data.getAuthor());

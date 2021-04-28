@@ -107,10 +107,15 @@ public class MainController {
 		for (int i = 0; i < link.size(); i++) {
 			linkURL = link.get(i);
 
+			// restTemplate puts JSON into a Data Object which
+			// is made up of a Bib_Data and Holding_Data object
 			Item items = restTemplate.getForObject(
 					linkURL + "?apikey=" + key + "&amp;format=json", Item.class);
 
-			info.add(items.toBib());
+			// Converts Data object into Listing Object.
+			// Listing Object has all the JSON data we
+			// need in a single, convenient place.
+			info.add(items.toListing());
 
 		}
 
@@ -119,12 +124,16 @@ public class MainController {
 
 	// Gets all links from members JSON set
 	private ArrayList<String> getLinks() {
-
+		// Uses restTemplate to put JSON into a Member Object.
+		// Member Object is a List of Link Object
+		// Link object only contains link field, ignores other JSON fields
 		Member books = restTemplate.getForObject(
 				url + "?apikey=" + key + "&amp;format=json", Member.class);
 		
 		ArrayList<String> link = new ArrayList<String>();
-		
+
+		// Creates array of links
+		// Separates them whenever there's a comma
 		String book = books.toString();
 		String[] links = book.split(", ", -1);
 
