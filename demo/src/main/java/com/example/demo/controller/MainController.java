@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.example.demo.model.Data;
-import com.example.demo.model.Listing;
-import com.example.demo.model.Member;
+import com.example.demo.model.Member.Member;
+import com.example.demo.model.Bibliography.Bibliography;
+import com.example.demo.model.Item.Item;
 
 @RestController
 public class MainController {
@@ -30,15 +30,16 @@ public class MainController {
 	private boolean dateOrder = false;
 
 	private static String url = "https://api-na.hosted.exlibrisgroup.com/almaws/v1/conf/sets/15528919710002976/members";
+	
 	//Model
-	ArrayList<Listing> listings = new ArrayList<Listing>();
+	ArrayList<Bibliography> bibs = new ArrayList<Bibliography>();
 
 	@GetMapping("/main")
 	public ModelAndView getBib(ModelAndView modelAndView) {
 		//Model
-		listings = callAPI();
+		bibs = callAPI();
 
-		modelAndView.addObject("bibs", listings);
+		modelAndView.addObject("bibs", bibs);
 		modelAndView.setViewName("main");
 
 		return modelAndView;
@@ -46,10 +47,10 @@ public class MainController {
 
 	@RequestMapping(value = "/titleSort")
 	public ModelAndView titleSort(ModelAndView modelAndView) {
-		modelAndView.addObject("bibs", listings);
+		modelAndView.addObject("bibs", bibs);
 		modelAndView.setViewName("main");
 		
-		sortByTitle(listings);
+		sortByTitle(bibs);
 		titleOrder = !titleOrder;
 		dateOrder = false;
 		
@@ -58,20 +59,20 @@ public class MainController {
 
 	@RequestMapping(value = "/dateSort")
 	public ModelAndView dateSort(ModelAndView modelAndView) {
-		modelAndView.addObject("bibs", listings);
+		modelAndView.addObject("bibs", bibs);
 		modelAndView.setViewName("main");
 		
-		sortByDate(listings);
+		sortByDate(bibs);
 		dateOrder = !dateOrder;
 		titleOrder = false;
 		
 		return modelAndView;
 	}
 
-	public ArrayList<Listing> sortByTitle(ArrayList<Listing> listings) {
+	public ArrayList<Bibliography> sortByTitle(ArrayList<Bibliography> listings) {
 		// Sorts an ArrayList of Objects alphabetically based on getTitle()
-		Collections.sort(listings, new Comparator<Listing>() {
-			public int compare(Listing v1, Listing v2) {
+		Collections.sort(listings, new Comparator<Bibliography>() {
+			public int compare(Bibliography v1, Bibliography v2) {
 				return v1.getTitle().compareTo(v2.getTitle());
 			}
 		});
@@ -83,10 +84,10 @@ public class MainController {
 		return listings;
 	}
 
-	public ArrayList<Listing> sortByDate(ArrayList<Listing> listings) {
+	public ArrayList<Bibliography> sortByDate(ArrayList<Bibliography> listings) {
 		// Sorts an ArrayList of Objects in ascending order by getDate...()
-		Collections.sort(listings, new Comparator<Listing>() {
-			public int compare(Listing v1, Listing v2) {
+		Collections.sort(listings, new Comparator<Bibliography>() {
+			public int compare(Bibliography v1, Bibliography v2) {
 				return v1.getDate_of_publication().compareTo(v2.getDate_of_publication());
 			}
 		});
@@ -97,10 +98,10 @@ public class MainController {
 		return listings;
 	}
 
-	private ArrayList<Listing> callAPI() {
+	private ArrayList<Bibliography> callAPI() {
 		// Gets JSON link of every book
 		ArrayList<String> link = getLinks();
-		ArrayList<Listing> info = new ArrayList<Listing>();
+		ArrayList<Bibliography> info = new ArrayList<Bibliography>();
 		String linkURL;
 
 		for (int i = 0; i < link.size(); i++) {
@@ -108,12 +109,13 @@ public class MainController {
 
 			// restTemplate puts JSON into a Data Object which
 			// is made up of a Bib_Data and Holding_Data object
-			Data output = restTemplate.getForObject(linkURL + "?apikey=" + key + "&amp;format=json", Data.class);
+			Item items = restTemplate.getForObject(
+					linkURL + "?apikey=" + key + "&amp;format=json", Item.class);
 
 			// Converts Data object into Listing Object.
 			// Listing Object has all the JSON data we
 			// need in a single, convenient place.
-			info.add(output.toListing());
+			info.add(items.toListing());
 
 		}
 

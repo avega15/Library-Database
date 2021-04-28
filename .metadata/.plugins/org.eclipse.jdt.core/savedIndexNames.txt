@@ -23,7 +23,6 @@ INDEX VERSION 1.131+C:\Users\Abraham\Desktop\Library_API\.metadata\.plugins\org.
 1764103808.index
 2105418581.index
 775081381.index
-3435648363.index
 950100502.index
 3373815958.index
 92281216.index
